@@ -8,7 +8,7 @@ const pub = (u) => ({ n: u.n, e: u.e, r: u.r });
 
 export async function handle({ method: m, path, search, auth, body, db }) {
   const R = (status, b) => ({ status, body: b });
-  if (!db) return R(500, { error: "Database not connected. Add SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY in your hosting settings, then redeploy." });
+  if (!db) return R(500, { error: "Database not connected. Add the UBK_DB_SECRET setting in your hosting project, then redeploy." });
   const SECRET = process.env.AUTH_SECRET || crypto.createHash("sha256").update("ubk|" + (db.seed || "")).digest("hex");
   const sign = (t) => crypto.createHmac("sha256", SECRET).update(t).digest("hex");
   const token = (u) => { const b = Buffer.from(JSON.stringify({ e: u.e, r: u.r, n: u.n, x: Date.now() + 12 * 36e5 })).toString("base64url"); return b + "." + sign(b); };
@@ -20,7 +20,8 @@ export async function handle({ method: m, path, search, auth, body, db }) {
   try {
     let users = (await db.get("users")) || [];
     if (!users.length) {
-      users = [mkUser("School Admin", process.env.ADMIN_EMAIL || "admin@umarschool.edu", process.env.ADMIN_PASSWORD || "8vU2V47nG2EuvXeqmsI5", "admin")];
+      if (!process.env.ADMIN_PASSWORD) return R(500, { error: "No admin account exists. Contact the system administrator." });
+      users = [mkUser("School Admin", process.env.ADMIN_EMAIL || "admin@umarschool.edu", process.env.ADMIN_PASSWORD, "admin")];
       await db.set("users", users);
     }
     if (path === "/api/login" && m === "POST") {

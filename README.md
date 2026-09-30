@@ -1,11 +1,12 @@
 # UBK School Finance Portal - Supabase backend (Vercel or Netlify)
 
-1. Supabase: SQL Editor > run supabase/schema.sql (creates the private table ubk_kv).
-2. Supabase: Project Settings > API: copy the Project URL and the service_role key.
-3. Hosting (Vercel: Project > Settings > Environment Variables / Netlify: Site configuration > Environment variables):
-   SUPABASE_URL              = your Project URL
-   SUPABASE_SERVICE_ROLE_KEY = your service_role key (keep secret, never put it in the website files)
-   optional: AUTH_SECRET, ADMIN_EMAIL, ADMIN_PASSWORD
-4. Redeploy. First sign-in: admin@umarschool.edu / 8vU2V47nG2EuvXeqmsI5 (change it immediately).
+Database: Supabase project "umar-bn-l-khattob-results" (table ubk_kv, already created and locked with RLS).
+The only setting you must add in your hosting project:
 
-Layout: public/ website, api/ Vercel server, netlify/functions/ Netlify server, server/ shared logic, supabase/ database script.
+  UBK_DB_SECRET = <the secret given to you in chat>
+
+Vercel: Project > Settings > Environment Variables > add for Production, Preview, Development > Redeploy.
+Netlify: already set on the ubkfinance site. Deploy with the command, or link the Git repo.
+
+Sign in: admin@umarschool.edu with the new password given in chat. Change it on Administration > Change my password.
+Layout: public/ website, api/ Vercel server, netlify/functions/ Netlify server, server/ shared logic, supabase/ database notes.
