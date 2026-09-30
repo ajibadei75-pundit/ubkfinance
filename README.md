@@ -1,15 +1,13 @@
-# UBK School Finance Portal
+# UBK School Finance Portal (works on Vercel and Netlify)
 
-Folder layout (keep as is):
-- public/index.html            website (all pages, charts, receipts, PDF reports)
-- public/manifest.webmanifest, icon-192.png, icon-512.png   installable app
-- netlify/functions/api.mjs    secure server: login, shared data, user management
-- netlify.toml, package.json   Netlify settings and the one dependency (@netlify/blobs)
+## Vercel
+1. Import this folder (GitHub, or `npx vercel --prod` inside it).
+2. Project > Storage > Create Database > Upstash Redis (free) > Connect to this project (all environments).
+   This adds the KV_REST_API_URL / KV_REST_API_TOKEN variables automatically.
+3. Redeploy. Sign in: admin@umarschool.edu / 8vU2V47nG2EuvXeqmsI5, then change the password.
+Optional variables: AUTH_SECRET, ADMIN_EMAIL, ADMIN_PASSWORD.
 
-Required Netlify environment variables (already set on the ubkfinance site):
-AUTH_SECRET, ADMIN_PASSWORD (optional: ADMIN_EMAIL)
+## Netlify
+Run `npx -y @netlify/mcp@latest --site-id <ID> --proxy-path "<URL>"` inside this folder, or link the Git repo.
 
-Deploy (run inside this folder, Node.js required):
-  npx -y @netlify/mcp@latest --site-id <SITE_ID> --proxy-path "<PROXY_URL>"
-or connect this folder's Git repository to the Netlify site (auto-deploys on every push).
-Do not use drag-and-drop: the server dependency would not be installed.
+Layout: public/ (website), api/ (Vercel server), netlify/functions/ (Netlify server), server/ (shared logic).
