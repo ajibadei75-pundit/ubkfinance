@@ -1,13 +1,11 @@
-# UBK School Finance Portal (works on Vercel and Netlify)
+# UBK School Finance Portal - Supabase backend (Vercel or Netlify)
 
-## Vercel
-1. Import this folder (GitHub, or `npx vercel --prod` inside it).
-2. Project > Storage > Create Database > Upstash Redis (free) > Connect to this project (all environments).
-   This adds the KV_REST_API_URL / KV_REST_API_TOKEN variables automatically.
-3. Redeploy. Sign in: admin@umarschool.edu / 8vU2V47nG2EuvXeqmsI5, then change the password.
-Optional variables: AUTH_SECRET, ADMIN_EMAIL, ADMIN_PASSWORD.
+1. Supabase: SQL Editor > run supabase/schema.sql (creates the private table ubk_kv).
+2. Supabase: Project Settings > API: copy the Project URL and the service_role key.
+3. Hosting (Vercel: Project > Settings > Environment Variables / Netlify: Site configuration > Environment variables):
+   SUPABASE_URL              = your Project URL
+   SUPABASE_SERVICE_ROLE_KEY = your service_role key (keep secret, never put it in the website files)
+   optional: AUTH_SECRET, ADMIN_EMAIL, ADMIN_PASSWORD
+4. Redeploy. First sign-in: admin@umarschool.edu / 8vU2V47nG2EuvXeqmsI5 (change it immediately).
 
-## Netlify
-Run `npx -y @netlify/mcp@latest --site-id <ID> --proxy-path "<URL>"` inside this folder, or link the Git repo.
-
-Layout: public/ (website), api/ (Vercel server), netlify/functions/ (Netlify server), server/ (shared logic).
+Layout: public/ website, api/ Vercel server, netlify/functions/ Netlify server, server/ shared logic, supabase/ database script.
